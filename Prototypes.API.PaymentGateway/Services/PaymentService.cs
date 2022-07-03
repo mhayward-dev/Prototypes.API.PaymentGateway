@@ -1,4 +1,6 @@
-﻿using Prototypes.API.PaymentGateway.Bank;
+﻿using System;
+using Prototypes.API.PaymentGateway.Bank;
+using Prototypes.API.PaymentGateway.Enums;
 using Prototypes.API.PaymentGateway.Models;
 
 namespace Prototypes.API.PaymentGateway.Services
@@ -8,7 +10,7 @@ namespace Prototypes.API.PaymentGateway.Services
         private readonly IBankFactory _bankFactory;
         private readonly ILogger _logger;
 
-        public PaymentService(IBankFactory bankFactory, ILogger logger)
+        public PaymentService(IBankFactory bankFactory, ILogger<PaymentService> logger)
         {
             _bankFactory = bankFactory;
             _logger = logger;
@@ -18,7 +20,7 @@ namespace Prototypes.API.PaymentGateway.Services
         {
             try
             {
-                var bankService = _bankFactory.Create(payment.CardType);
+                var bankService = _bankFactory.Create(Enum.Parse<BankType>(payment.CardType));
                 var bankResponse = await bankService.MakeDebitRequest(payment);
 
                 return new PaymentResponse
@@ -26,7 +28,8 @@ namespace Prototypes.API.PaymentGateway.Services
                     CustomerReference = Guid.NewGuid().ToString(), // TODO - create a nice reference for the merchant and shopper
                     IsSuccess = bankResponse.IsSuccess,
                     BankResponseId = bankResponse.BankResponseId,
-                    BankResponseCode = bankResponse.ResponseCode,
+                    Message = bankResponse.ResponseCode,
+                    DateCreated = DateTime.Now,
                 };
             }
             catch(Exception e)
@@ -37,6 +40,7 @@ namespace Prototypes.API.PaymentGateway.Services
                 return new PaymentResponse
                 {
                     IsSuccess = false,
+                    Message = "An error occured processing the payment"
                 };
             }
         }

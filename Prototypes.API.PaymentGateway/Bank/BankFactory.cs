@@ -1,4 +1,4 @@
-﻿using Prototypes.API.PaymentGateway.Enum;
+﻿using Prototypes.API.PaymentGateway.Enums;
 
 namespace Prototypes.API.PaymentGateway.Bank
 {

@@ -1,4 +1,4 @@
-﻿using Prototypes.API.PaymentGateway.Enum;
+﻿using Prototypes.API.PaymentGateway.Enums;
 using Prototypes.API.PaymentGateway.Models;
 
 namespace Prototypes.API.PaymentGateway.Bank

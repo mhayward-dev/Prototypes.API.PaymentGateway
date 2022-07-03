@@ -1,4 +1,4 @@
-﻿using Prototypes.API.PaymentGateway.Enum;
+﻿using Prototypes.API.PaymentGateway.Enums;
 using Prototypes.API.PaymentGateway.Models;
 
 namespace Prototypes.API.PaymentGateway.Bank
@@ -9,7 +9,11 @@ namespace Prototypes.API.PaymentGateway.Bank
 
         public Task<BankResponse> MakeDebitRequest(Payment payment)
         {
-            throw new NotImplementedException();
+            return Task.FromResult(new BankResponse { 
+                BankResponseId = "TEST12345",
+                IsSuccess = true,
+                ResponseCode = "Accepted"
+            });
         }
     }
 }

@@ -1,4 +1,4 @@
-﻿namespace Prototypes.API.PaymentGateway.Enum
+﻿namespace Prototypes.API.PaymentGateway.Enums
 {
     public enum BankType
     {

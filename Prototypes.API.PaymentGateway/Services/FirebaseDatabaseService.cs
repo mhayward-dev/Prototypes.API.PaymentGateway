@@ -10,7 +10,7 @@ namespace Prototypes.API.PaymentGateway.Services
         private readonly ILogger _logger;
         private readonly FirebaseClient _firebase;
 
-        public FirebaseDatabaseService(IConfiguration config, ILogger logger)
+        public FirebaseDatabaseService(IConfiguration config, ILogger<FirebaseDatabaseService> logger)
         {
             _config = config;
             _logger = logger;
