@@ -25,6 +25,7 @@ namespace Prototypes.API.PaymentGateway.Services
                 {
                     CustomerReference = Guid.NewGuid().ToString(), // TODO - create a nice reference for the merchant and shopper
                     IsSuccess = bankResponse.IsSuccess,
+                    BankResponseId = bankResponse.BankResponseId,
                     BankResponseCode = bankResponse.ResponseCode,
                 };
             }

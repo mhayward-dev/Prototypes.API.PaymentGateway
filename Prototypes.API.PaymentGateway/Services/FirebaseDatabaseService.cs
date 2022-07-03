@@ -7,14 +7,14 @@ namespace Prototypes.API.PaymentGateway.Services
     public class FirebaseDatabaseService : IDatabaseService
     {
         private readonly IConfiguration _config;
-        private readonly FirebaseClient _firebase;
         private readonly ILogger _logger;
+        private readonly FirebaseClient _firebase;
 
         public FirebaseDatabaseService(IConfiguration config, ILogger logger)
         {
-            _firebase = new FirebaseClient(_config.GetValue<string>("Firebase:DatabaseEndpoint"));
             _config = config;
             _logger = logger;
+            _firebase = new FirebaseClient(_config.GetValue<string>("Firebase:DatabaseEndpoint"));
         }
 
         public async Task<DatabaseResponse<T>> AddRecord<T>(string tableName, T entity) where T : class
@@ -32,6 +32,7 @@ namespace Prototypes.API.PaymentGateway.Services
             }
             catch (Exception e)
             {
+                // TODO - implement a better logging service
                 _logger.LogError(e.Message, e.InnerException);
 
                 return new DatabaseResponse<T>
