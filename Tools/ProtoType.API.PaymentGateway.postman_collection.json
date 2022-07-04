@@ -1,0 +1,99 @@
+{
+	"info": {
+		"_postman_id": "cbd2785a-90cd-4de3-a427-e974cc700b90",
+		"name": "ProtoType.API.PaymentGateway",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "17485727"
+	},
+	"item": [
+		{
+			"name": "Dev",
+			"item": [
+				{
+					"name": "Payment",
+					"item": [
+						{
+							"name": "Debit",
+							"request": {
+								"auth": {
+									"type": "apikey",
+									"apikey": [
+										{
+											"key": "value",
+											"value": "Basic dGVzdDp0ZXN0",
+											"type": "string"
+										},
+										{
+											"key": "key",
+											"value": "Authorization",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"cardType\": \"Visa\",\r\n  \"cardNumber\": \"4111111111111111\",\r\n  \"cardCvv\": \"123\",\r\n  \"cardExpiry\": \"01/25\",\r\n  \"amount\": 9.99,\r\n  \"currency\": \"GBP\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "https://localhost:44320/Payment/debit",
+									"protocol": "https",
+									"host": [
+										"localhost"
+									],
+									"port": "44320",
+									"path": [
+										"Payment",
+										"debit"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get by ID",
+							"request": {
+								"auth": {
+									"type": "apikey",
+									"apikey": [
+										{
+											"key": "value",
+											"value": "Basic dGVzdDp0ZXN0",
+											"type": "string"
+										},
+										{
+											"key": "key",
+											"value": "Authorization",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "https://localhost:44320/Payment/-N68yCAT2wR970NIXGmy",
+									"protocol": "https",
+									"host": [
+										"localhost"
+									],
+									"port": "44320",
+									"path": [
+										"Payment",
+										"-N68yCAT2wR970NIXGmy"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		}
+	]
+}
