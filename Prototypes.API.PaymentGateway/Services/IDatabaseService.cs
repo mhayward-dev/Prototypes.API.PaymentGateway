@@ -1,5 +1,4 @@
-﻿using Firebase.Database;
-using Prototypes.API.PaymentGateway.Models;
+﻿using Prototypes.API.PaymentGateway.Models;
 
 namespace Prototypes.API.PaymentGateway.Services
 {

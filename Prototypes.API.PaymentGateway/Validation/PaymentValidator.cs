@@ -22,7 +22,9 @@ namespace Prototypes.API.PaymentGateway.Validation
             RuleFor(p => p.CardExpiry)
                 .NotEmpty()
                 .Length(5)
-                .Matches(@"^(0[1-9]|1[0-2])\/?([0-9]{4}|[0-9]{2})$");
+                .Matches(@"^(0[1-9]|1[0-2])\/?([0-9]{4}|[0-9]{2})$")
+                .Must(BeADateInTheFuture)
+                .WithMessage("Card expiry must be in \"dd/YY\" format and in the future");
 
             RuleFor(p => p.CardCvv)
                 .NotEmpty()
@@ -37,6 +39,15 @@ namespace Prototypes.API.PaymentGateway.Validation
                 .Length(3)
                 .Must(BeAnIsoCurrency)
                 .WithMessage("Currency \"{PropertyValue}\" is not a valid ISO currency");
+        }
+
+        private bool BeADateInTheFuture(string mmyy)
+        {
+            var monthInt = int.Parse(mmyy.Substring(0, 2));
+            var yearInt = int.Parse(mmyy.Substring(3, 2)) + 2000;
+            var date = new DateTime(yearInt, monthInt, 1);
+
+            return date > DateTime.Now;
         }
 
         private bool BeAnIsoCurrency(string currency)
