@@ -11,8 +11,7 @@ In order to use the API, please add the "Authorization" header below:
 
 ``Authorization: Basic dGVzdDp0ZXN0``
 
-## Payments API
-## Debit request
+## Payments API - Debit request
 ### POST: /payment/debit
 To make a debit request you must supply a Payment object. A payment object is made up of the following fields:
 
@@ -83,7 +82,7 @@ Please note: not all field requirements have been established yet. but some basi
 }
 ```
 
-## Get Payment Request
+## Payments API - Get Payment
 ### GET: /payment/{id}
 To retrieve a payment you must supply the transactionId from the payment.
 
