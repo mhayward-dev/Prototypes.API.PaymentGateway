@@ -43,11 +43,16 @@ namespace Prototypes.API.PaymentGateway.Validation
 
         private bool BeADateInTheFuture(string mmyy)
         {
-            var monthInt = int.Parse(mmyy.Substring(0, 2));
-            var yearInt = int.Parse(mmyy.Substring(3, 2)) + 2000;
-            var date = new DateTime(yearInt, monthInt, 1);
+            if (!string.IsNullOrWhiteSpace(mmyy) && mmyy.Length == 5)
+            {
+                var monthInt = int.Parse(mmyy.Substring(0, 2));
+                var yearInt = int.Parse(mmyy.Substring(3, 2)) + 2000;
+                var date = new DateTime(yearInt, monthInt, 1);
 
-            return date > DateTime.Now;
+                return date > DateTime.Now;
+            }
+
+            return false;
         }
 
         private bool BeAnIsoCurrency(string currency)

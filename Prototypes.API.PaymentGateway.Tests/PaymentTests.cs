@@ -15,7 +15,7 @@ namespace Prototypes.API.PaymentGateway.Tests
         }
 
         [Fact]
-        public void Should_validate_all_payment_fields()
+        public void Should_reject_bad_payment_fields()
         {
             // TODO - each validation for each property should be tested, but single cases are tested below.
             var mockPayment = new Payment
@@ -36,6 +36,27 @@ namespace Prototypes.API.PaymentGateway.Tests
             result.ShouldHaveValidationErrorFor(p => p.CardExpiry);
             result.ShouldHaveValidationErrorFor(p => p.Amount);
             result.ShouldHaveValidationErrorFor(p => p.Currency);
+        }
+
+        [Fact]
+        public void Should_accept_valid_payment_fields()
+        {
+            var mockPayment = new Payment
+            {
+                CardType = "Visa",
+                CardNumber = "4111111111111111",
+                CardCvv = "123",
+                CardExpiry= "01/25",
+                Amount = 10.99m,
+                Currency = "GBP"
+            };
+
+            var result = validator.TestValidate(mockPayment);
+
+            result.ShouldNotHaveValidationErrorFor(p => p.CardType);
+            result.ShouldNotHaveValidationErrorFor(p => p.CardNumber);
+            result.ShouldNotHaveValidationErrorFor(p => p.CardCvv);
+            result.ShouldNotHaveValidationErrorFor(p => p.Amount);
         }
     }
 }
