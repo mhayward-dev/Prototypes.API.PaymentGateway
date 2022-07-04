@@ -63,7 +63,7 @@ namespace Prototypes.API.PaymentGateway.Controllers
             var payment = await _paymentService.GetPaymentById(id);
 
             if (payment == null)
-                return new BadRequestResult();
+                return new BadRequestObjectResult("Record not found");
 
             return new OkObjectResult(payment);
         }

@@ -10,7 +10,7 @@ namespace Prototypes.API.PaymentGateway.Tests.MockServices
 
         public Task<BankResponse> MakeDebitRequest(Payment payment)
         {
-            // request mocks here
+            // TODO - mock the bank via an AWS lambda or Google Cloud function
 
             return Task.FromResult(new BankResponse
             {

@@ -9,6 +9,8 @@ namespace Prototypes.API.PaymentGateway.Bank
 
         public Task<BankResponse> MakeDebitRequest(Payment payment)
         {
+            // TODO - implement bank logic
+
             throw new NotImplementedException();
         }
     }

@@ -1,7 +1,6 @@
 ﻿using Firebase.Database;
 using Firebase.Database.Query;
 using Prototypes.API.PaymentGateway.Models;
-using System.Linq;
 
 namespace Prototypes.API.PaymentGateway.Services
 {
