@@ -5,7 +5,7 @@ This is a prototype API that aims to build the basis of a payment gateway. Pleas
 # Documentation
 
 ### Authentication
-The Web API uses Basic Authentication that would allow a merchant to have a unique key in is required to interact with the endpoints. The application currently only uses one static API key, but this will be built upon in future.
+The Web API uses Basic Authentication that would allow a merchant to have a unique key that is required to interact with the gateway endpoints. The application currently only uses one static API key, but this will be built upon in future for multiple merchants.
 
 In order to use the API, please add the "Authorization" header below:
 
