@@ -38,28 +38,34 @@ namespace Prototypes.API.PaymentGateway.Controllers
             }
 
             var paymentResponse = await _paymentService.Debit(payment);
+            var Id = await _paymentService.AddPayment(paymentResponse);
 
-            await _databaseService.AddRecord("Payments", paymentResponse);
+            if (Id == null)
+                return new BadRequestResult();
 
             var merchantResponse = new MerchantResponse
             {
+                TransactionId = Id,
                 IsSuccess = paymentResponse.IsSuccess,
-                CustomerReference = paymentResponse.CustomerReference,
-                Message = paymentResponse.Message // TODO - format appriopriate messaging to merchant
+                Message = paymentResponse.Message,
+                Payment = paymentResponse.Payment
             };
 
             if (!paymentResponse.IsSuccess)
                 return new BadRequestObjectResult(merchantResponse);
 
-            return new CreatedResult(
-                paymentResponse.CustomerReference,
-                merchantResponse);
+            return new CreatedResult(Id, merchantResponse);
         }
 
-        [HttpGet]
-        public async Task<IActionResult> GetPayment()
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetPayment([FromRoute] string id)
         {
-            return new OkResult();
+            var payment = await _paymentService.GetPaymentById(id);
+
+            if (payment == null)
+                return new BadRequestResult();
+
+            return new OkObjectResult(payment);
         }
     }
 }

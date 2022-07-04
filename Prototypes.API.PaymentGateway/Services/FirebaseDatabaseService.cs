@@ -1,6 +1,7 @@
 ﻿using Firebase.Database;
 using Firebase.Database.Query;
 using Prototypes.API.PaymentGateway.Models;
+using System.Linq;
 
 namespace Prototypes.API.PaymentGateway.Services
 {
@@ -26,25 +27,44 @@ namespace Prototypes.API.PaymentGateway.Services
                 return new DatabaseResponse<T>
                 {
                     Id = result.Key,
-                    Entity = result.Object,
+                    Result = result.Object,
                     IsSuccess = true
                 };
             }
             catch (Exception e)
             {
                 // TODO - implement a better logging service
-                _logger.LogError(e.Message, e.InnerException);
+                _logger.LogError("AddRecord failed", e.InnerException);
 
-                return new DatabaseResponse<T>
-                {
-                    IsSuccess = false,
-                };
+                return new DatabaseResponse<T> { IsSuccess = false };
             }
         }
 
-        public async Task<T> GetRecord<T>(string tableName, Guid id) where T : class
+        public async Task<DatabaseResponse<T>> GetRecordByKey<T>(string tableName, string key) where T : class
         {
-            throw new NotImplementedException();
+            try
+            {
+                var result = await _firebase.Child(tableName).Child(key).OnceSingleAsync<T>();
+
+                if (result != null)
+                {
+                    return new DatabaseResponse<T>
+                    {
+                        Id = key,
+                        Result = result,
+                        IsSuccess = true
+                    };
+                }
+
+                return new DatabaseResponse<T> { IsSuccess = false };
+            }
+            catch (Exception e)
+            {
+                // TODO - implement a better logging service
+                _logger.LogError("GetRecordByKey failed", e.InnerException);
+
+                return new DatabaseResponse<T> { IsSuccess = false };
+            }
         }
     }
 }

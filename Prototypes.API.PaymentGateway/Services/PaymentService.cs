@@ -1,6 +1,6 @@
-﻿using System;
-using Prototypes.API.PaymentGateway.Bank;
+﻿using Prototypes.API.PaymentGateway.Bank;
 using Prototypes.API.PaymentGateway.Enums;
+using Prototypes.API.PaymentGateway.Extensions;
 using Prototypes.API.PaymentGateway.Models;
 
 namespace Prototypes.API.PaymentGateway.Services
@@ -8,11 +8,13 @@ namespace Prototypes.API.PaymentGateway.Services
     public class PaymentService : IPaymentService
     {
         private readonly IBankFactory _bankFactory;
+        private readonly IDatabaseService _databaseService;
         private readonly ILogger _logger;
 
-        public PaymentService(IBankFactory bankFactory, ILogger<PaymentService> logger)
+        public PaymentService(IBankFactory bankFactory, IDatabaseService databaseService, ILogger<PaymentService> logger)
         {
             _bankFactory = bankFactory;
+            _databaseService = databaseService;
             _logger = logger;
         }
 
@@ -23,16 +25,18 @@ namespace Prototypes.API.PaymentGateway.Services
                 var bankService = _bankFactory.Create(Enum.Parse<BankType>(payment.CardType));
                 var bankResponse = await bankService.MakeDebitRequest(payment);
 
-                return new PaymentResponse
+                var paymentResponse = new PaymentResponse
                 {
-                    CustomerReference = Guid.NewGuid().ToString(), // TODO - create a nice reference for the merchant and shopper
                     IsSuccess = bankResponse.IsSuccess,
-                    BankResponseId = bankResponse.BankResponseId,
+                    BankResponseCode = bankResponse.BankResponseId,
                     Message = bankResponse.ResponseCode,
                     DateCreated = DateTime.Now,
+                    Payment = payment.ToMerchantResponse() // Remove very sensitive data, do we store credit card numbers?
                 };
+
+                return paymentResponse;
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 // TODO - implement a better logging service
                 _logger.LogError(e.Message, e.InnerException);
@@ -45,9 +49,21 @@ namespace Prototypes.API.PaymentGateway.Services
             }
         }
 
-        public PaymentResponse GetPaymentById(Guid id)
+        public async Task<string?> AddPayment(PaymentResponse payment)
         {
-            return new PaymentResponse();
+            var dbResponse = await _databaseService.AddRecord("Payments", payment);
+
+            return dbResponse.Id;
+        }
+
+        public async Task<PaymentResponse?> GetPaymentById(string id)
+        {
+            var dbResponse = await _databaseService.GetRecordByKey<PaymentResponse>("Payments", id);
+
+            if (dbResponse.IsSuccess)
+                dbResponse.Result.Id = id;
+
+            return dbResponse?.Result;
         }
     }
 }

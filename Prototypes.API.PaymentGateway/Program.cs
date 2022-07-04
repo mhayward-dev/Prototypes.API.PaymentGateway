@@ -1,6 +1,7 @@
 using FluentValidation;
 using Prototypes.API.PaymentGateway.Bank;
 using Prototypes.API.PaymentGateway.Extensions;
+using Prototypes.API.PaymentGateway.Middleware;
 using Prototypes.API.PaymentGateway.Models;
 using Prototypes.API.PaymentGateway.Services;
 using Prototypes.API.PaymentGateway.Validation;
@@ -33,6 +34,9 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+// Check for a valid API key using the API Key Middleware
+app.UseBasicAuthApiKey();
 
 app.UseHttpsRedirection();
 

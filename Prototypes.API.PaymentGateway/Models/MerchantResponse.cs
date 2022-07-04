@@ -2,9 +2,10 @@
 {
     public class MerchantResponse
     {
-        public string CustomerReference { get; set; }
+        public string TransactionId { get; set; }
         public bool IsSuccess { get; set; }
         public string Message { get; set; }
         public IEnumerable<string> Errors { get; set; }
+        public Payment Payment { get; set; }
     }
 }
