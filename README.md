@@ -4,7 +4,7 @@ This is a prototype API that aims to build the basis of a payment gateway. Pleas
 
 # Documentation
 
-### Authentication
+## Authentication
 The Web API uses Basic Authentication that would allow a merchant to have a unique key that is required to interact with the gateway endpoints. The application currently only uses one static API key, but this will be built upon in future for multiple merchants.
 
 In order to use the API, please add the "Authorization" header below:
@@ -12,7 +12,7 @@ In order to use the API, please add the "Authorization" header below:
 ``Authorization: Basic dGVzdDp0ZXN0``
 
 ## Payments API
-### Debit request
+## Debit request
 ### POST: /payment/debit
 To make a debit request you must supply a Payment object. A payment object is made up of the following fields:
 
@@ -83,7 +83,7 @@ Please note: not all field requirements have been established yet. but some basi
 }
 ```
 
-### Get Payment Request
+## Get Payment Request
 ### GET: /payment/{id}
 To retrieve a payment you must supply the transactionId from the payment.
 
