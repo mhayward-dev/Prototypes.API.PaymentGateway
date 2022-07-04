@@ -44,8 +44,7 @@ Please note: not all field requirements have been established yet. but some basi
 | Payment Status      | Http Status Code | Response body                          |
 | ------------------- | ---------------- | -------------------------------------- |
 | Successful          | 200              | See example below                      |
-| Rejected            | 400              |                                        |
-| Bad Request         | 500              | See example below                      |
+| Rejected            | 400              | See example below                      |
 
 
 ### Example successful response
@@ -94,8 +93,7 @@ To retrieve a payment you must supply the transactionId from the payment.
 | Payment Status      | Http Status Code | Response body                          |
 | ------------------- | ---------------- | -------------------------------------- |
 | Successful          | 200              | See example below                      |
-| Rejected            | 400              |                                        |
-| Bad Request         | 500              | "Record not found"                     |
+| Rejected            | 400              | "Record not found"                     |
 
 ### Example successful response
 ```
