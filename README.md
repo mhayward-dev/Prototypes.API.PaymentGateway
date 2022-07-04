@@ -116,6 +116,10 @@ To retrieve a payment you must supply the transactionId from the payment.
     }
 }
 ```
+# Tools
+## Postman
+My Postman collection can be found [here](https://github.com/mhayward-dev/Prototypes.API.PaymentGateway/blob/main/Tools/ProtoType.API.PaymentGateway.postman_collection.json) in the project for use.
+
 
 # Notes
 * I am using Google Firebase's Realtime Database to store data. This is simply due to already using Firebase for other personal projects. I tried to design this prototype so that Firebase can be switched out for a better cloud database alternative in future.
