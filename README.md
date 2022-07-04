@@ -21,7 +21,7 @@ Please note: not all field requirements have been established yet. but some basi
 | ------------------- | ---------------- | --------------------------------------------------------- | ------------------------------|
 | cardType            | true             | Visa, MasterCard or AmericanExpress                       | "Visa"                        |
 | cardNumber          | true             | Max 16 chars long                                         | "4111111111111111"            |
-| cardExpiry          | true             | mm/YY format                                              | "01/25"                       |
+| cardExpiry          | true             | MM/yy format                                              | "01/25"                       |
 | cardCvv             | true             | 3-4 chars long                                            | "123"                         |
 | amount              | true             | Greater than 0, less than equal to 9999                   | "99.99"                       |
 | currency            | true             | Should be an ISO currency code and atleast 3 chars long   | "GBP"                         |
