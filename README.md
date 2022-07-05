@@ -32,10 +32,10 @@ Please note: not all field requirements have been established yet. but some basi
 {
   "cardType": "Visa",
   "cardNumber": "4111111111111111",
-  "cardCvv": "123",``
-  "cardExpiry": "01/25",``
-  "amount": 9.99,``
-  "currency": "GBP"``
+  "cardCvv": "123",
+  "cardExpiry": "01/25",
+  "amount": 9.99,
+  "currency": "GBP"
 }
 ```
 
