@@ -8,12 +8,16 @@ namespace Prototypes.API.PaymentGateway.Models.Database
         public PaymentTableEntity() { }
         public PaymentTableEntity(PaymentResponse response)
         {
-            Amount = response.Payment.Amount;
-            Currency = response.Payment.Currency;
-            CardType = response.Payment.CardType;
-            CardNumber = response.Payment.CardNumber;
-            CardExpiry = response.Payment.CardExpiry;
-            CardCvv = response.Payment.CardCvv;
+            if (response.Payment != null)
+            {
+                Amount = response.Payment.Amount;
+                Currency = response.Payment.Currency;
+                CardType = response.Payment.CardType;
+                CardNumber = response.Payment.CardNumber;
+                CardExpiry = response.Payment.CardExpiry;
+                CardCvv = response.Payment.CardCvv;
+            }
+
             IsSuccess = response.IsSuccess;
             BankResponseCode = response.BankResponseCode;
             Message = response.Message;
