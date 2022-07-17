@@ -119,5 +119,5 @@ My Postman collection can be found [here](https://github.com/mhayward-dev/Protot
 
 
 # Notes
-* I am using Google Firebase's Realtime Database to store data. This is simply due to already using Firebase for other personal projects. I tried to design this prototype so that Firebase can be switched out for a better cloud database alternative in future.
+* I am using Azure Table Storage in the solution as the database. A flat record structure is not ideal for storing inter-related entities so this could be changed to a Relational Database in future, but right now I am using a NOSQL database purely to avoid hosting costs.
 * The Visa card type is the only functioning bank at this moment in time. Mastercard and Amex will throw an exception.
