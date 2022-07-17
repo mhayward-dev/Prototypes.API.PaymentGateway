@@ -4,10 +4,6 @@ namespace Prototypes.API.PaymentGateway.Models
 {
     public class PaymentResponse
     {
-        public PaymentResponse()
-        {
-        }
-
         public PaymentResponse(Payment payment)
         {
             Payment = payment.RedactSensitiveData();

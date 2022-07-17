@@ -1,6 +1,5 @@
 ﻿using Prototypes.API.PaymentGateway.Bank;
 using Prototypes.API.PaymentGateway.Enums;
-using Prototypes.API.PaymentGateway.Extensions;
 using Prototypes.API.PaymentGateway.Models;
 using Prototypes.API.PaymentGateway.Models.Database;
 
@@ -41,7 +40,7 @@ namespace Prototypes.API.PaymentGateway.Services
                 // TODO - implement a better logging service
                 _logger.LogError(e.Message, e.InnerException);
 
-                return new PaymentResponse
+                return new PaymentResponse(payment)
                 {
                     IsSuccess = false,
                     Message = "An error occured processing the payment"
