@@ -41,14 +41,14 @@ namespace Prototypes.API.PaymentGateway.Tests
                 CardNumber = "4111111111111111",
                 CardCvv = "123",
                 CardExpiry = "01/25",
-                Amount = 10.99m,
+                Amount = 10.99,
                 Currency = "GBP"
             };
 
-            var masked = mockPayment.RedactSensitiveData();
+            var masked = new PaymentResponse(mockPayment);
 
-            Assert.Equal("************1111", masked.CardNumber);
-            Assert.Equal("***", masked.CardCvv);
+            Assert.Equal("************1111", masked.Payment.CardNumber);
+            Assert.Equal("***", masked.Payment.CardCvv);
         }
 
         [Fact]
@@ -60,7 +60,7 @@ namespace Prototypes.API.PaymentGateway.Tests
                 CardNumber = "4111111111111111",
                 CardCvv = "123",
                 CardExpiry = "01/25",
-                Amount = 10.99m,
+                Amount = 10.99,
                 Currency = "GBP"
             };
 
@@ -69,7 +69,7 @@ namespace Prototypes.API.PaymentGateway.Tests
                 IsSuccess = true,
                 BankResponseCode = "Test123",
                 Message = "Accepted",
-                DateCreated = DateTime.Now
+                DateCreated = DateTime.UtcNow
             };
 
             var response = await _paymentService.AddPayment(mockResponse);
@@ -88,7 +88,7 @@ namespace Prototypes.API.PaymentGateway.Tests
                 CardNumber = "4111111111111111",
                 CardCvv = "123",
                 CardExpiry = "01/25",
-                Amount = 10.99m,
+                Amount = 10.99,
                 Currency = "GBP"
             };
 
@@ -97,7 +97,7 @@ namespace Prototypes.API.PaymentGateway.Tests
                 IsSuccess = true,
                 BankResponseCode = "Test123",
                 Message = "Accepted",
-                DateCreated = DateTime.Now
+                DateCreated = DateTime.UtcNow
             };
 
             var id = await _paymentService.AddPayment(mockResponse);
@@ -113,7 +113,7 @@ namespace Prototypes.API.PaymentGateway.Tests
             Assert.Equal("************1111", record.Payment.CardNumber);
             Assert.Equal("***", record.Payment.CardCvv);
             Assert.Equal("01/25", record.Payment.CardExpiry);
-            Assert.Equal(10.99m, record.Payment.Amount);
+            Assert.Equal(10.99, record.Payment.Amount);
             Assert.Equal("GBP", record.Payment.Currency);
         }
     }

@@ -47,7 +47,7 @@ namespace Prototypes.API.PaymentGateway.Tests
                 CardNumber = "4111111111111111",
                 CardCvv = "123",
                 CardExpiry= "01/25",
-                Amount = 10.99m,
+                Amount = 10.99,
                 Currency = "GBP"
             };
 

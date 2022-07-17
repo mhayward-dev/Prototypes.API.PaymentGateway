@@ -6,7 +6,7 @@
         public string CardNumber { get; set; } = default!;
         public string CardExpiry { get; set; } = default!;
         public string CardCvv  { get; set; } = default!;
-        public decimal Amount { get; set; }
+        public double Amount { get; set; }
         public string Currency { get; set; } = default!;
     }
 }
