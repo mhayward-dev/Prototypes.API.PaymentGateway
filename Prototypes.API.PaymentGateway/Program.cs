@@ -18,7 +18,7 @@ builder.Services.AddSingleton<IBankFactory, BankFactory>();
 
 builder.Services.RegisterAllTypes<IBankService>(new[] { typeof(IBankService).Assembly });
 builder.Services.AddSingleton<IPaymentService, PaymentService>();
-builder.Services.AddSingleton(new TableServiceClient(builder.Configuration.GetValue<string>("Azure:DatabaseEndpoint")));
+builder.Services.AddSingleton(new TableServiceClient(builder.Configuration.GetValue<string>("Azure:DatabaseConnectionString")));
 builder.Services.AddSingleton<IDatabaseService, AzureDatabaseService>();
 
 // Scopes

@@ -22,10 +22,8 @@ namespace Prototypes.API.PaymentGateway.Tests
 
             var configDict = new Dictionary<string, string>
              {
-                {"Azure:DatabaseEndpoint", "DefaultEndpointsProtocol=https;AccountName=prototypes-instance;AccountKey=UcO3Tq5AaFkMygdM2GFokFgQ4HHEgHxbrdAkxznw95WeAf8MFWbYAoUqgdBAdLsMEmPwYTzPtWXf5LRIbdI9jA==;TableEndpoint=https://prototypes-instance.table.cosmos.azure.com:443/;"}
+                {"Azure:DatabaseConnectionString", "DefaultEndpointsProtocol=https;AccountName=prototypes-instance;AccountKey=UcO3Tq5AaFkMygdM2GFokFgQ4HHEgHxbrdAkxznw95WeAf8MFWbYAoUqgdBAdLsMEmPwYTzPtWXf5LRIbdI9jA==;TableEndpoint=https://prototypes-instance.table.cosmos.azure.com:443/;"}
              };
-
-            var config = new ConfigurationBuilder().AddInMemoryCollection(configDict).Build();
 
             _bankFactory = new BankFactory(services);
             _databaseService = new AzureDatabaseService(new TableServiceClient(configDict.GetValueOrDefault("Azure:DatabaseEndpoint")), new MockLogService<AzureDatabaseService>());
