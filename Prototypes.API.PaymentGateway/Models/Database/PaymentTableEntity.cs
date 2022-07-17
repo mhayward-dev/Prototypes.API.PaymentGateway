@@ -3,7 +3,7 @@ using Azure.Data.Tables;
 
 namespace Prototypes.API.PaymentGateway.Models.Database
 {
-    public class PaymentTableEntity : Payment, ITableEntity
+    public class PaymentTableEntity : ITableEntity
     {
         public PaymentTableEntity() { }
         public PaymentTableEntity(PaymentResponse response)
@@ -31,6 +31,13 @@ namespace Prototypes.API.PaymentGateway.Models.Database
         public bool Sale { get; init; }
         public ETag ETag { get; set; } = default!;
         public DateTimeOffset? Timestamp { get; set; } = default!;
+
+        public string CardType { get; set; } = default!;
+        public string CardNumber { get; set; } = default!;
+        public string CardExpiry { get; set; } = default!;
+        public string CardCvv { get; set; } = default!;
+        public double Amount { get; set; }
+        public string Currency { get; set; } = default!;
 
         public bool IsSuccess { get; set; }
         public string BankResponseCode { get; set; } = default!;

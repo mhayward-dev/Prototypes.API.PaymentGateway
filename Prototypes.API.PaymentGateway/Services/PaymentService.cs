@@ -68,7 +68,15 @@ namespace Prototypes.API.PaymentGateway.Services
             if (dbResponse.Result != null)
             {
                 var result = dbResponse.Result;
-                var payment = dbResponse.Result as Payment;
+                var payment = new Payment
+                {
+                    Amount = result.Amount,
+                    Currency = result.Currency,
+                    CardNumber = result.CardNumber,
+                    CardExpiry = result.CardExpiry,
+                    CardCvv = result.CardCvv,
+                    CardType = result.CardType
+                };
 
                 return new PaymentResponse(payment)
                 {
