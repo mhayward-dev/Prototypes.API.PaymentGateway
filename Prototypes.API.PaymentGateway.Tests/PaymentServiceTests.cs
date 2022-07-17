@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using Azure.Data.Tables;
+using Microsoft.Extensions.Configuration;
 using Prototypes.API.PaymentGateway.Bank;
 using Prototypes.API.PaymentGateway.Extensions;
 using Prototypes.API.PaymentGateway.Models;
@@ -21,18 +22,18 @@ namespace Prototypes.API.PaymentGateway.Tests
 
             var configDict = new Dictionary<string, string>
              {
-                {"Firebase:DatabaseEndpoint", "https://prototypes-ecb2c-default-rtdb.europe-west1.firebasedatabase.app/"}
+                {"Azure:DatabaseEndpoint", "DefaultEndpointsProtocol=https;AccountName=prototypes-instance;AccountKey=UcO3Tq5AaFkMygdM2GFokFgQ4HHEgHxbrdAkxznw95WeAf8MFWbYAoUqgdBAdLsMEmPwYTzPtWXf5LRIbdI9jA==;TableEndpoint=https://prototypes-instance.table.cosmos.azure.com:443/;"}
              };
 
             var config = new ConfigurationBuilder().AddInMemoryCollection(configDict).Build();
 
             _bankFactory = new BankFactory(services);
-            _databaseService = new FirebaseDatabaseService(config, new MockLogService<FirebaseDatabaseService>());
+            _databaseService = new AzureDatabaseService(new TableServiceClient(configDict.GetValueOrDefault("Azure:DatabaseEndpoint")), new MockLogService<AzureDatabaseService>());
             _paymentService = new PaymentService(_bankFactory, _databaseService, new MockLogService<PaymentService>());
         }
 
         [Fact]
-        public async void Should_mask_payment_details()
+        public void Should_mask_payment_details()
         {
             var mockPayment = new Payment
             {
@@ -44,7 +45,7 @@ namespace Prototypes.API.PaymentGateway.Tests
                 Currency = "GBP"
             };
 
-            var masked = mockPayment.ToMerchantResponse();
+            var masked = mockPayment.RedactSensitiveData();
 
             Assert.Equal("************1111", masked.CardNumber);
             Assert.Equal("***", masked.CardCvv);
@@ -63,13 +64,12 @@ namespace Prototypes.API.PaymentGateway.Tests
                 Currency = "GBP"
             };
 
-            var mockResponse = new PaymentResponse
+            var mockResponse = new PaymentResponse(mockPayment)
             {
                 IsSuccess = true,
                 BankResponseCode = "Test123",
                 Message = "Accepted",
-                DateCreated = DateTime.Now,
-                Payment = mockPayment.ToMerchantResponse()
+                DateCreated = DateTime.Now
             };
 
             var response = await _paymentService.AddPayment(mockResponse);
@@ -81,6 +81,7 @@ namespace Prototypes.API.PaymentGateway.Tests
         [Fact]
         public async void Should_retrieve_payment_from_datastore()
         {
+            var mockClientName = "ClientName";
             var mockPayment = new Payment
             {
                 CardType = "Visa",
@@ -91,17 +92,16 @@ namespace Prototypes.API.PaymentGateway.Tests
                 Currency = "GBP"
             };
 
-            var mockResponse = new PaymentResponse
+            var mockResponse = new PaymentResponse(mockPayment)
             {
                 IsSuccess = true,
                 BankResponseCode = "Test123",
                 Message = "Accepted",
-                DateCreated = DateTime.Now,
-                Payment = mockPayment.ToMerchantResponse()
+                DateCreated = DateTime.Now
             };
 
             var id = await _paymentService.AddPayment(mockResponse);
-            var record = await _paymentService.GetPaymentById(id);
+            var record = await _paymentService.GetPaymentById(id, "ClientName");
 
             Assert.NotNull(record);
 

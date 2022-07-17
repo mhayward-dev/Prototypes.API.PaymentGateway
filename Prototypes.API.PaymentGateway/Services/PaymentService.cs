@@ -2,6 +2,7 @@
 using Prototypes.API.PaymentGateway.Enums;
 using Prototypes.API.PaymentGateway.Extensions;
 using Prototypes.API.PaymentGateway.Models;
+using Prototypes.API.PaymentGateway.Models.Database;
 
 namespace Prototypes.API.PaymentGateway.Services
 {
@@ -25,13 +26,12 @@ namespace Prototypes.API.PaymentGateway.Services
                 var bankService = _bankFactory.Create(Enum.Parse<BankType>(payment.CardType));
                 var bankResponse = await bankService.MakeDebitRequest(payment);
 
-                var paymentResponse = new PaymentResponse
+                var paymentResponse = new PaymentResponse(payment)
                 {
                     IsSuccess = bankResponse.IsSuccess,
                     BankResponseCode = bankResponse.BankResponseId,
                     Message = bankResponse.ResponseCode,
-                    DateCreated = DateTime.Now,
-                    Payment = payment.ToMerchantResponse() // Remove very sensitive data, do we store credit card numbers?
+                    DateCreated = DateTime.UtcNow,
                 };
 
                 return paymentResponse;
@@ -49,21 +49,39 @@ namespace Prototypes.API.PaymentGateway.Services
             }
         }
 
-        public async Task<string?> AddPayment(PaymentResponse payment)
+        public async Task<string?> AddPayment(PaymentResponse response)
         {
-            var dbResponse = await _databaseService.AddRecord("Payments", payment);
+            var dbEntity = new PaymentTableEntity(response)
+            {
+                RowKey = Guid.NewGuid().ToString(),
+                PartitionKey = "ClientName",
+                Timestamp = DateTime.SpecifyKind(DateTime.UtcNow, DateTimeKind.Utc)
+            };
 
+            var dbResponse = await _databaseService.AddRecord("Payments", dbEntity);
             return dbResponse.Id;
         }
 
-        public async Task<PaymentResponse?> GetPaymentById(string id)
+        public async Task<PaymentResponse?> GetPaymentById(string id, string clientName)
         {
-            var dbResponse = await _databaseService.GetRecordByKey<PaymentResponse>("Payments", id);
+            var dbResponse = await _databaseService.GetRecordByKey<PaymentTableEntity>("Payments", id, clientName);
 
-            if (dbResponse.IsSuccess)
-                dbResponse.Result.Id = id;
+            if (dbResponse.Result != null)
+            {
+                var result = dbResponse.Result;
+                var payment = dbResponse.Result as Payment;
 
-            return dbResponse?.Result;
+                return new PaymentResponse(payment)
+                {
+                    Id = result.RowKey,
+                    IsSuccess = result.IsSuccess,
+                    BankResponseCode = result.BankResponseCode,
+                    Message = result.Message,
+                    DateCreated = result.DateCreated
+                };
+            }
+
+            return null;
         }
     }
 }

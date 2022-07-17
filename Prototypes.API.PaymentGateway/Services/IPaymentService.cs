@@ -6,6 +6,6 @@ namespace Prototypes.API.PaymentGateway.Services
     {
         Task<PaymentResponse> Debit(Payment payment);
         Task<string?> AddPayment(PaymentResponse payment);
-        Task<PaymentResponse?> GetPaymentById(string id);
+        Task<PaymentResponse?> GetPaymentById(string id, string clientName);
     }
 }

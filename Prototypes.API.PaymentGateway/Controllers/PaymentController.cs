@@ -29,7 +29,7 @@ namespace Prototypes.API.PaymentGateway.Controllers
 
             if (!validCheck.IsValid)
             {
-                return new BadRequestObjectResult(new MerchantResponse
+                return new BadRequestObjectResult(new MerchantResponse(payment)
                 {
                     IsSuccess = false,
                     Message = "Invalid Request",
@@ -43,12 +43,11 @@ namespace Prototypes.API.PaymentGateway.Controllers
             if (Id == null)
                 return new BadRequestResult();
 
-            var merchantResponse = new MerchantResponse
+            var merchantResponse = new MerchantResponse(payment)
             {
                 TransactionId = Id,
                 IsSuccess = paymentResponse.IsSuccess,
-                Message = paymentResponse.Message,
-                Payment = paymentResponse.Payment
+                Message = paymentResponse.Message
             };
 
             if (!paymentResponse.IsSuccess)
@@ -60,7 +59,8 @@ namespace Prototypes.API.PaymentGateway.Controllers
         [HttpGet("{id}")]
         public async Task<IActionResult> GetPayment([FromRoute] string id)
         {
-            var payment = await _paymentService.GetPaymentById(id);
+            var clientName = "ClientName"; // TODO - get client name via auth key
+            var payment = await _paymentService.GetPaymentById(id, clientName);
 
             if (payment == null)
                 return new BadRequestObjectResult("Record not found");

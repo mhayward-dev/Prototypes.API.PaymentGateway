@@ -1,12 +1,24 @@
-﻿namespace Prototypes.API.PaymentGateway.Models
+﻿using Prototypes.API.PaymentGateway.Extensions;
+
+namespace Prototypes.API.PaymentGateway.Models
 {
     public class PaymentResponse
     {
-        public string Id { get; set; }
+        public PaymentResponse()
+        {
+        }
+
+        public PaymentResponse(Payment payment)
+        {
+            Payment = payment.RedactSensitiveData();
+        }
+
+        public string Id { get; set; } = default!;
         public bool IsSuccess { get; set; }
-        public string BankResponseCode { get; set; }
-        public string Message { get; set; }
-        public DateTime DateCreated { get; set; }
-        public Payment Payment { get; set; }
+        public string BankResponseCode { get; set; } = default!;
+        public string Message { get; set; } = default!;
+        public DateTime? DateCreated { get; set; }
+
+        public Payment? Payment { get; private set; }
     }
 }

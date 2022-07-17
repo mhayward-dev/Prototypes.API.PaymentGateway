@@ -1,3 +1,4 @@
+using Azure.Data.Tables;
 using FluentValidation;
 using Prototypes.API.PaymentGateway.Bank;
 using Prototypes.API.PaymentGateway.Extensions;
@@ -17,7 +18,8 @@ builder.Services.AddSingleton<IBankFactory, BankFactory>();
 
 builder.Services.RegisterAllTypes<IBankService>(new[] { typeof(IBankService).Assembly });
 builder.Services.AddSingleton<IPaymentService, PaymentService>();
-builder.Services.AddSingleton<IDatabaseService, FirebaseDatabaseService>();
+builder.Services.AddSingleton(new TableServiceClient(builder.Configuration.GetValue<string>("Azure:DatabaseEndpoint")));
+builder.Services.AddSingleton<IDatabaseService, AzureDatabaseService>();
 
 // Scopes
 builder.Services.AddScoped<IValidator<Payment>, PaymentValidator>();
